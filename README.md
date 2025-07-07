@@ -5,6 +5,7 @@
 
 - 책 이름 : Manifest-Android-Interview (영문판, 한글판)
 - 진행 기간 : 2025.07 ~ 2025.09 (예상)
+- 진도 : 매주 질문 7개씩 진행  
 
 ## 🙌 Contributors
 | [<img src="https://github.com/hegunhee.png" width="100px;" alt="hegunhee"/>](https://github.com/hegunhee) | [<img src="https://github.com/keem-hyun.png" width="100px;" alt="keem-hyun"/>](https://github.com/keem-hyun) | [<img src="https://github.com/sooj36.png" width="100px;" alt="sooj36"/>](https://github.com/sooj36) | [<img src="https://github.com/sdhong0609.png" width="100px;" alt="sdhong0609"/>](https://github.com/sdhong0609) | [<img src="https://github.com/vmkmym.png" width="100px;" alt="vmkmym"/>](https://github.com/vmkmym) |
