@@ -8,14 +8,14 @@
 - 진도 : 매주 질문 7개씩 진행  
 
 ## 🙌 Contributors
-| [<img src="https://github.com/hegunhee.png" width="100px;" alt="hegunhee"/>](https://github.com/hegunhee) | [<img src="https://github.com/keem-hyun.png" width="100px;" alt="keem-hyun"/>](https://github.com/keem-hyun) | [<img src="https://github.com/sooj36.png" width="100px;" alt="sooj36"/>](https://github.com/sooj36) | [<img src="https://github.com/sdhong0609.png" width="100px;" alt="sdhong0609"/>](https://github.com/sdhong0609) | [<img src="https://github.com/vmkmym.png" width="100px;" alt="vmkmym"/>](https://github.com/vmkmym) |
-|:--:|:--:|:--:|:--:|:--:|
-| [@hegunhee](https://github.com/hegunhee) | [@keem-hyun](https://github.com/keem-hyun) | [@sooj36](https://github.com/sooj36) | [@sdhong0609](https://github.com/sdhong0609) | [@vmkmym](https://github.com/vmkmym) |
+| [<img src="https://github.com/hegunhee.png" width="100px;" alt="hegunhee"/>](https://github.com/hegunhee) | [<img src="https://github.com/sooj36.png" width="100px;" alt="sooj36"/>](https://github.com/sooj36) | [<img src="https://github.com/sdhong0609.png" width="100px;" alt="sdhong0609"/>](https://github.com/sdhong0609) | [<img src="https://github.com/vmkmym.png" width="100px;" alt="vmkmym"/>](https://github.com/vmkmym) |
+|:--:|:--:|:--:|:--:|
+| [@hegunhee](https://github.com/hegunhee) | [@sooj36](https://github.com/sooj36) | [@sdhong0609](https://github.com/sdhong0609) | [@vmkmym](https://github.com/vmkmym) |
 
 ## 규칙
 1. 캠은 되도록 참여 권장
    - 몰입감과 집중을 위해
-2. 발표자는 매 스터디 시간에 뽑습니다.
+2. 발표자는 매 스터디 시간에 뽑습니다. (2명, 질문 3개/4개로 나눠서 발표)
 3. 발표가 끝나면 질문, 강조하고 싶었던 내용들을 자유롭게 발표하면됩니다.
 4. 주차별 정리한 내용은 스터디 전에만 올려주세요
 
