@@ -8,9 +8,9 @@
 - 진도 : 매주 질문 7개씩 진행  
 
 ## 🙌 Contributors
-| [<img src="https://github.com/hegunhee.png" width="100px;" alt="hegunhee"/>](https://github.com/hegunhee) | [<img src="https://github.com/sooj36.png" width="100px;" alt="sooj36"/>](https://github.com/sooj36) | [<img src="https://github.com/sdhong0609.png" width="100px;" alt="sdhong0609"/>](https://github.com/sdhong0609) | [<img src="https://github.com/vmkmym.png" width="100px;" alt="vmkmym"/>](https://github.com/vmkmym) |
-|:--:|:--:|:--:|:--:|
-| [@hegunhee](https://github.com/hegunhee) | [@sooj36](https://github.com/sooj36) | [@sdhong0609](https://github.com/sdhong0609) | [@vmkmym](https://github.com/vmkmym) |
+| [<img src="https://github.com/hegunhee.png" width="100px;" alt="hegunhee"/>](https://github.com/hegunhee) | [<img src="https://github.com/sooj36.png" width="100px;" alt="sooj36"/>](https://github.com/sooj36) | [<img src="https://github.com/sdhong0609.png" width="100px;" alt="sdhong0609"/>](https://github.com/sdhong0609) | [<img src="https://github.com/vmkmym.png" width="100px;" alt="vmkmym"/>](https://github.com/vmkmym) | [<img src="https://github.com/minkyu-types.png" width="100px;" alt="minkyu-types"/>](https://github.com/minkyu-types) | [<img src="https://github.com/KiwanPark.png" width="100px;" alt="KiwanPark"/>](https://github.com/KiwanPark)
+|:--:|:--:|:--:|:--:|:--:|:--:|
+| [@hegunhee](https://github.com/hegunhee) | [@sooj36](https://github.com/sooj36) | [@sdhong0609](https://github.com/sdhong0609) | [@vmkmym](https://github.com/vmkmym) | [@minkyu-types](https://github.com/minkyu-types) | [@KiwanPark](https://github.com/KiwanPark) |
 
 ## 규칙
 1. 캠은 되도록 참여 권장
@@ -29,5 +29,5 @@
 ## Commit & PR 규칙
 [week주차] 깃허브 닉네임 의 양식을 따릅니다.
 (ex. [week1] hegunhee)
-Assignees 본인 지정 -> 머지는 hegunhee가 일괄적으로 진행합니다.
+머지는 hegunhee가 일괄적으로 진행합니다.
 
