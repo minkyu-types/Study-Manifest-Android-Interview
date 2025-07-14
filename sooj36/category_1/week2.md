@@ -82,8 +82,31 @@
 	    * 2. UI 요소를 Application Context 로 생성 시, 테마 정보가 없어 화면이 의도와 다르게 나타나는 예상치 못한 동작이 일어남.
 
   #### @ **Pro Tips for Mastery: ContextWrapper란 무엇인가요?**
-  #### @ **Pro Tips for Mastery: Activity에서 this와 baseContext
-인스턴스의 차이점은 무엇인가요?
+	- 기존 Context 객체를 한번 감싸서(Wrapping), 원본을 직접 수정하지 않고, 기능을 변경하거나 확장할 수 있도록 하는 포장지 같은 클래스
+
+	- 기존 Context 가 가진 특정 동작을 재정의하거나, 새로운 기능을 추가하고 싶을 때 사용하며 이를 통해 기존 코드와의 호환성을 유지하면서 필요한 부분만 커스터마이징 할 수 있음
+
+	- 사용 사례
+		- 1. 커스텀 테마 적용 
+		- 2. 동적 리소스 처리 : ex 상황에 따라 다른 언어의 문자열 같은 리소소를 제공할 수 있음
+		- 3. 의존성 주입(DI)
+	- 이점
+		- 1. 재사용성 : 커스텀 로직을 래퍼 클래스로 캡슐화하여 여러 컴포넌트에서 재사용할 수 있음
+		- 2. 캡슐화 : 원본 코드를 변경하지 않고, 필요한 기능만 안전하게 재정의
+
+
+  #### @ **Pro Tips for Mastery: Activity에서 this와 baseContext 인스턴스의 차이점은 무엇인가요?
+	  - 모두 Context를 반환하지만, 서로 다른 계층과 목적을 가짐
+	  - Activity 'this'
+		  - (특징) ContextWrapper 의 하위 클래스이므로, this는 생명주기 관리나 UI 상호작용과 같은 Activity 고유 기능이 포함된 고수준 Context
+		  - (사용시점) 다른 Activity를 시작하거나, Dialog를 띄우는 등 일반적인 UI 및 생명주기 관련 작업에 사용
+	- baseContext
+		- Activity가 상속하는 ContextWrapper 클래스의 일부로, Activity가 구축되는 기반이 되는 기본(Basic) Context 를 나타냄
+		- (특징) Context 메서드 핵심 구현을 제공하는 ContextImpl 인스턴스
+		- (사용시점) 일반적으로 직접 사용하는 경우는 드물며, ContextWrapper를 구현하는 등에 사용
+	- (차이점)
+		- (범위) this는 현재 Activity 인스턴스와 그 생명주기를 나타내지만, baseContext는 Activity가 구축된 저수준의 Context 를 참조
+		- (사용법)  this는 UI 관련 작업에, baseContext 는 주로 커스텀 ContextWrapper 구현 시 핵심 기능과 성호작용 시 사용
   
   -------------
 
