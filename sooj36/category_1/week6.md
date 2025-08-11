@@ -955,59 +955,53 @@ private var sweepAngle = 120f
 
 - **(3). 크기 계산(onSizeChanged)**
 
+```
     - 뷰의 크기가 결정되면, 스피너를 그릴 실제 영역(RectF)과 중심점을 계산
 
 // (패딩과 선 두께(strokeWidth)를 모두 반영하여 경계를 설정해야 스피너가 잘리지 않음)
 
+```
   
 
 /
 
 - **(4). 뷰 측정 (onMeasure)**
 
+```
     - 레이아웃에서 wrap_content가 사용되었을 때를 대비해 합리적인 기본 크기를 지정
 
     - resolveSize()를 사용하여 MeasureSpec에 따라 최종 크기를 결정하고 setMeasuredDimension()으로 설정
 
     // 즉, 부모 뷰의 요구사항(MeasureSpec)과 뷰가 제안하는 최소.권장 사이즈를 절충해 실제 최종 크기 확정
 
+```
   
 
 /
 
 - **(5). 그리기 (onDraw)**
 
+```
 계산된 값들을 이용해 Canvas에 스피너를 그림
-
-  
 
 canvas.save()와 canvas.restore()를 사용해 캔버스의 상태(특히 회전)가 다른 드로잉에 영향을 주지 않도록 격리.
 
-  
-
 canvas.rotate()로 캔버스 자체를 회전시킨 후, canvas.drawArc()로 호를 그림
-
-  
+```
 
 /
 
 - **(6). 애니메이션 설정**
 
+```
 ValueAnimator를 사용해 회전과 길이 변화를 만듬
-
-  
 
 회전 애니메이터: 0°에서 360°까지 무한 반복하며, 회전 각도(rotationAngle)를 갱신
 
-  
-
 길이 애니메이터: 최소 각도와 최대 각도 사이를 왕복하며 호의 길이(sweepAngle)를 갱신
 
-  
-
 각 프레임이 갱신될 때마다 postInvalidateOnAnimation()을 호출하여 onDraw를 다시 실행시킴.
-
-  
+```
 
 /
 
@@ -1015,14 +1009,10 @@ ValueAnimator를 사용해 회전과 길이 변화를 만듬
 
 뷰의 생명주기에 맞춰 애니메이션을 안전하게 시작하고 정지
 
-
 onAttachedToWindow(): 뷰가 화면에 붙을 때 애니메이터를 시작
 
 onDetachedFromWindow(): 뷰가 화면에서 떨어질 때 애니메이터를 취소하여 메모리 누수를 방지.
 
-  
-  
 
 ---
-
 ---
