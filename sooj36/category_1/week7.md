@@ -97,7 +97,6 @@ ConstraintLayout 사용이 더 효율적인 시나리오를 말씀해주세요.*
 | **match_parent** | 부모 크기 | 부모 컨테이너의 전체 크기를 채움 |
 | **match_constraint (0dp)** | Constraint 관계 | 설정된 constraint 사이의 공간을 모두 채우도록 확장 |
 
-
 ---
 
 ## 🤔 Q40. SurfaceView 대신 TextureView는 언제 사용해야 하나요?
