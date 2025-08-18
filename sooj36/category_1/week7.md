@@ -47,6 +47,9 @@
 
 ---
 
+
+
+
 ## 🤔 Q39. ConstraintLayout이란 무엇인가요?
 
 - 여러 레이아웃을 중첩하지 않고 복잡한 UI 생성 가능한 레이아웃
@@ -98,6 +101,8 @@ ConstraintLayout 사용이 더 효율적인 시나리오를 말씀해주세요.*
 | **match_constraint (0dp)** | Constraint 관계 | 설정된 constraint 사이의 공간을 모두 채우도록 확장 |
 
 ---
+
+
 
 ## 🤔 Q40. SurfaceView 대신 TextureView는 언제 사용해야 하나요?
 
@@ -173,6 +178,8 @@ class CustomTextureView(context: Context, attrs: AttributeSet? = null) : Texture
 
 
 ---
+
+
 
 ## 🤔 Q41. RecyclerView는 내부적으로 어떻게 작동하나요?
 
@@ -436,6 +443,8 @@ DiffUtil을 사용하여 차이를 계산합니다.)
 
 ---
 
+
+
 ## 🤔 Q42. Dp와 Sp의 차이점은 무엇인가요? 
 
 ### Dp (Density-independent Pixels)
@@ -467,6 +476,8 @@ DiffUtil을 사용하여 차이를 계산합니다.)
 
 
 ---
+
+
 
 ## 🤔 Q43. 나인패치(nine-patch) 이미지의 용도는 무엇인가요?
 
@@ -500,7 +511,9 @@ DiffUtil을 사용하여 차이를 계산합니다.)
 - 사용 시나리오
 버튼 배경, 채팅 말풍선, 다이얼로그 배경처럼 
 텍스트 길이나 화면 크기에 따라 크기가 동적으로 변해야 하는 UI 요소에 사용합니다.
+
 ---
+
 
 ## 🤔 Q44. Drawable이란 무엇이며, UI 개발에서 어떻게 사용되나요?
 
