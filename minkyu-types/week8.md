@@ -30,7 +30,182 @@
 ##### Q) 큰 Bitmap을 메모리에 로드하는 것은 어떤 위험성이 있으며, 어떻게 효율적으로 처리할 수 있나요?
 
 #### Pro Tips for Mastery: 커스텀 이미지 로딩 시스템에서 큰 비트맵 캐싱을 어떻게 구현하나요?
+- 이미지 리스트, 그리드, 캐러셀을 처리할 때 원활하고 메모리 안전한 안드로이드 애플리케이션을 구축하려면 큰 비트맵을 효율적으로 관리하는 것이 필수적임
+- 안드로이드는 2가지 효과적인 전략을 제공하는데, LruCache를 사용한 인메모리 캐싱과 DiskLruCache를 사용한 디스크 기반 캐싱
 
+##### LruCache를 사용한 메모리 내 캐싱
+- LruCache는 Bitmap을 사용할 때 선호되는 메모리 내 캐싱 솔루션
+- 최근에 사용된 항목에 대한 강한 참조를 유지하고, 메모리가 부족할 때 가장 오랫동안 사용되지 않은 항목을 자동으로 제거함
+- 메모리 오버플로우 위험을 방지하기 위해 사용 가능한 메모리의 약 1/8을 할당함
+- 이를 통해 메모리에 빠르게 접근하고 중복 디코딩을 방지할 수 있음
+
+```
+object LruCacheManager {
+    // 사용 가능한 최대 메모리 (KB)
+    val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
+    // 캐시 크기를 최대 메모리의 1/8로 설정
+    val cacheSize = maxMemory / 8
+    val memoryCache = object : LruCache<String, Bitmap>(cacheSize) {
+            // 캐시 항목 크기를 KB 단위로 정의
+            override fun sizeOf(key: String, bitmap: Bitmap): Int {
+            // Bitmap의 바이트 수를 KB로 변환
+            return bitmap.byteCount / 1024
+        }
+    }
+}
+
+fun loadBitmap(imageId: int, imageView: ImageView) {
+    val key = imageId.toString()
+
+    // 메모리 캐시에서 먼저 확인
+    LruCacheManager.memoryCache.get(key)?.let {
+        imageView.setImageBitmap(it)
+    } ?: run {
+        // 캐시에 없으면 플레이스홀더 설정 및 백그라운드 작업 요청
+        imageView.setImageResource(R.drawable.image_placeholder)
+
+        val workRequest = OneTimeWorkRequestBuilder<BitmapDecodeWorker>()
+            .setInputData(workDataOf("imageId" to imageId))
+            .build()
+        WorkManager.getInstance(context).enqueue(workRequest)
+    }
+}
+
+class BitmapDecodeWorker(
+    context: Context,
+    workerParams: WorkerParameters
+): CoroutineWorker(context, workerParams) {
+
+    override suspend fun doWork(): Result {
+        val imageId = inputData.getInt("imageId", -1)
+        if (imageId == -1) return Result.failure()
+
+        val bitmap = decodeSampleBitmapFromResource(
+            res = applicationContext.resources,
+            resId = imageId,
+            reqWidth = 100,
+            reqHeight = 100
+        )
+
+        bitmap?.let {
+            LruCacheManager.memoryCache.put(imageId.toString(), it)
+            return Result.success()
+        }
+
+        return Result.failure()
+    }
+}
+```
+- 메모리 핸들링 로직에 SoftReference, WeakReference를 사용하지 않은 이유는, 공격적인 GC로 인해 캐싱값 자체를 더 이상 신뢰할 수 없는 상황이 발생할 수 있기 때문에
+
+##### SoftReference, WeakReference를 사용했을 때 발생할 수 있는 문제점
+
+
+##### DiskLruCache를 사용한 디스크 내 캐싱
+- 안드로이드에서 메모리는 제한적이고 휘발적이라는 특성을 가짐
+- Bitmap이 앱 세션 간에 지속되고 재계산을 피하도록 보장하려면 DiskLruCache를 사용하여 Bitmap을 디스크에 저장할 수 있음
+- 이는 특히 리소스 집약적인 이미지나 스크롤 가능한 이미지 목록을 처리할 때 유용함
+
+(1) 디코딩된 Bitmap을 유지하기 위해 안전한 해싱 및 I/O 로직으로 DiskLruCache를 래핑하는 DiskCacheManager를 작성할 수 있음
+```
+class DiskCacheManager(
+    context: Context,
+    cacheDirName: String = "images",
+    cacheSize: Long = 10 * 1024 * 1024
+) {
+    private var diskLruCache: DiskLruCache? = null
+    private val lock = Any()
+
+    init {
+        val cacheDir = getDiskCacheDir(context, cacheDirName)
+        if (!cacheDir.exists()) {
+            cacheDir.mkdirs()
+        }
+        try {
+            // DiskLruCache 열기
+            diskLruCache = DiskLrucache.open(cacheDir, 1, 1, cacheSize)
+        } catch(e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getDiskCacheDir(context: Context, uniqueName: String): File {
+        val cachePath = context.cacheDir.path
+        return File(cachePath + File.seperator + uniqueName)
+    }
+
+    private fun filenameForKey(key: String): String {
+        return try {
+            val messageDigest = MessageDigest.getInstance("SHA-1")
+            messageDigest.update(key.toByteArray())
+            byteToHexString(messageDigest.digest())
+        } catch(e: NoSuchAlgorithmException) {
+            key.hashCode().toString()
+        }
+    }
+
+    private fun bytesToHexString(bytes: ByteArray): String {
+        val sb = StringBuilder()
+        for (b in bytes) {
+            val hex = Integer.toHexString(0xFF and b.toInt())
+            if (hex.length) == 1) {
+                sp.append('0')
+            }
+            sb.append(hex)
+        }
+        return sb.toString()
+    }
+
+    // 디스크 캐시에서 비트맵 가져오기
+    fun get(key: String): Bitmap? {
+        synchronized(lock) {
+            val safeKey = filenameForKey(key)
+            var snapshot: DiskLruCache.Snapshot? = null
+    
+            return try {
+                snapshot = diskLruCache?.get(safeKey)
+                snapshot?.getInputStream(0)?.use { inputStream ‐>
+                    BitmapFactory.decodeStream(inputStream)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                null
+            } finally {
+                snapshot?.close()
+            }
+        }
+    }
+
+    fun set(key: String, bitmap: Bitmap) {
+        synchronized(lock) {
+            val safeKey = filenameForKey(key)
+            var editor: DiskLruCache.Editor? = null
+            try {
+                editor = diskLruCache?.edit(safeKey)
+                if (editor != null) {
+                    editor.newOutputStream(0).use { outputStream ->
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                        editor.commit()
+                    }
+                } else {
+                    diskLruCache?.flush()
+                }
+            } catch(e: IOException) {
+                e.printStackTrace()
+                try {
+                    editor?.abort()
+                } catch(ignored: IOException) {
+                    
+                }
+            }
+        }
+    }
+}
+```
+- 위 클래스는 다음을 보장함
+(1) 디스크-안전한 SHA-1 기반 파일 이름 생성
+(2) 안전한 I/O 작업
+(3) 디스크 캐시에 중복으로 데이터를 쓰는 행위 방지
 
 ### Q46. 애니메이션을 어떻게 구현하나요?
 - 애니메이션은 부드러운 전환을 만들고, UI 변화에 대해서 사용자들의 이목을 집중시키며, 시각적 피드백을 제공하여 사용자 경험을 향상시킬 수 있음
