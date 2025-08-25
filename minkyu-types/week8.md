@@ -401,9 +401,13 @@ class DiskCacheManager(
 
 #### ViewBinding의 장점
 (1) 타입 안전성 : 캐스팅할 필요 없이 직접 접근하여 타입 불일치로 인한 런타임 오류를 방지함
+
 (2) 더 깔끔한 코드 : `findViewById()`를 호출할 필요가 없어지고 보일러 플레이트 코드가 줄어듬
+
 (3) Null 안전성 : nullable 타입의 View를 자동으로 처리하여 선택적 UI 컴포넌트와 상호작용할 때 더 안전한 코드를 보장함
+
 (4) 성능 : DataBinding과 달리 ViewBinding은 바인딩 표현식이나 추가 XML 파싱을 사용하지 않으므로 런타임 오버헤드가 최소화됨
+
 
 #### DataBinding과의 비교
 - DataBinding은 바인딩 표현식 및 양방향 데이터 바인딩과 같은 더 많은 기능을 제공하지만, 더 복잡하고 런타임 오버헤드를 유발함
