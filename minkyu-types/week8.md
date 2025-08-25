@@ -327,12 +327,47 @@ class DiskCacheManager(
 (4) 원활한 사용자 경험을 위해 터치 기반 해제 및 포커스 제어를 지원함
 
 ### Q48. 웹 페이지를 어떻게 렌더링하나요?
+- WebView는 앱 내에서 직접 웹 컨텐츠를 표시하고 상호 작용할 수 있는 안드로이드 컴포넌트
+- 애플리케이션에 내장된 미니 브라우저 역할을 하여 개발자가 웹 페이지르 렌더링하고, HTML 콘텐츠를 로드하거나, JavaScript를 직접적으로 실행할 수 있도록 함
+- 앱이 실행중인 기기에서 최신 WebView 기능을 안전하게 활용하려면 AndroidX Webkit 라이브러리를 사용해야 함
+- 이 라이브러리는 이전 버전과 호환되는 API를 제공하여 기기의 안드로이드 버전에 관계 없이 최신 기능에 접근할 수 있도록 보장함
 
+(1) WebView 초기화하기
+(2) 웹 페이지 로드하기
+- WebView 인스턴스에서 `loadUrl()` 메서드를 사용함
+- 페이지가 인터넷 접근을 요구하는 경우 Manifest 파일에서 필요한 권한을 활성화해야함
+(3) JavaScript 활성화하기
+- WebSettings를 수정하여 활성화
+(4) WebView 동작 커스텀하기
+- 페이지 네비게이션 가로채기: 외부 브라우저에서 열지 않고 WebView 내에서 페이지 네비게이션을 처리하려면 WebViewClient를 사용해야 함
+- 다운로드 처리하기: WebView를 통해 다운로드되는 파일을 관리하려면 DownloadListener를 활용할 수 있음
+- evaluateJavaScript 또는 `loadUrl()`을 사용하여 JavaScript 코드를 주입함
 
+#### 보안 고려 사항
+(1) 보안 위험에 앱을 노출시킬 수 있으르 필요하지 않는 한 JavaScript를 활성화하지 않는 것이 좋음
+(2) 파일에 대한 무단 접근을 방지하기 위해 `setAllowFileAccess()` 및 `setAllowFileAccessFromFileUrls(`)를 신중하게 사용하는 것이 좋음
+(3) 교차 사이트 스크립팅(XSS), URL 스푸핑과 같은 보안 취약점을 유발하지 않는지 확인해야 함
+(4) @JavascriptInterface를 통해 노출된 메서드가 보안 취약점을 유발하지 않는지 확인해야 함
+
+#### 실전 질문
+(1) 외부 링크를 클릭할 때 사용자가 앱을 벗어나는 것을 방지하기 위해 WebView 내비게이션을 효과적으로 처리하는 방법에는 무엇이 있는지 설명해 주세요
 
 ### Q49. AppCompat 라이브러리란 무엇인가요?
+- AppCompat 라이브러리는 개발자가 하위 버전의 안드로이드와의 호환성을 유지하는 데 도움이 되도록 설계된 Android Jetpack 제품군의 일부
+- 하위 안드로이드 버전과의 하위 호환성을 보장하면서 최신 기능을 앱에 사용할 수 있음
 
+(1) UI 컴포넌트 하위 호환성
+- AppCompat 라이브러리는 FragmentActivity를 확장하고 하위 버전의 안드로이드와의 호환성을 보장하는 AppCompatActivity와 같은 최신 UI 컴포넌트를 제공함
+(2) Material Design 지원
+- AppCompat을 사용하면 개발자는 하위 안드로이드 버전을 실행하는 기기에 Material Design 원칙을 통합할 수 있음
+(3) 테마 및 스타일링 지원
+- Theme.AppCompat과 같은 테마를 사용하여 모든 API 레벨에서 일관된 UI를 보장할 수 있음
+- 이런 테마는 벡터 드로어블 지원과 같은 최신 스타일링 기능을 하위 안드로이드 버전에 제공함
+(4) 동적 기능 지원
+- 동적 리소스 로딩 및 벡터 드로어블 지원을 제공하여 하위 호환성을 유지하면서 최신 디자인 요소를 효율적으로 구현하기 쉽게 만듬
 
+#### AppCompat을 사용하는 이유
+- AppCompat 라이브러리를 사용하는 주된 이유는 최신 안드로이드 기능과 UI 컴포넌트가 지원되는 모든 API 레벨에서 일관되게 작동하도록 보장하는 것
 
 ### Q50. Material Design Components(MDC)란 무엇인가요?
 - Google의 Material Design 가이드라인을 기반으로 하는 커스텀 가능한 UI 위젯 및 컴포넌트 집합
