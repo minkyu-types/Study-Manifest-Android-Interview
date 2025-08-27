@@ -269,7 +269,31 @@ protected void postValue(T value) {
 - 디버깅이 조금 어려울 수 있다(Hilt 오류 로그 가끔 이해가 어렵다)
 
 ## Q57) Jetpack Paging 라이브러리는 어떤 메커니즘으로 동작하나요?
+- 대규모 데이터셋을 청크/페이지 단위로 로드하고 표시하는 프로세스를 돕도록 설계된 AAC 요소
+- DB나 API를 통해 데이터를 효율적으로 가져와야 하는 경우 유용하며, 메모리 사용량을 최소화하고 RecyclerView의 성능을 향상시킴
+- 데이터를 점진적으로 로드하기 위해 데이터 캐싱/재시도 메커니즘/효율적인 메모리 사용 등과 같은 부분을 기본적으로 처리함
 
+### 구성 요소
+(1) PagingData
+- 점진적으로 로드되는 데이터 스트림. `RecyclerView`에 사용 가능
+(2) PagingSource
+- 데이터 소스에서 데이터가 로드되는 방식을 정의하는 역할
+- 위치/ID와 같은 키 값을 기반으로 데이터 페이지를 로드하는 `load()` 메서드를 제공함
+(3) Pager
+- PagingSource와 PagingData 간의 중개자 역할
+- PagingData의 생명주기를 관리함
+(4) RemoteMediator
+- 로컬 캐싱과 원격 Api 데이터를 결합할 때 경계 조건을 구현하는 데 사용됨
+
+### 작동 방식
+- Paging 라이브러리는 데이터를 페이지로 분할하여 효율적인 데이터 로딩을 가능하게 함
+- 이때 LiveData/Flow를 기본으로 지원하여 데이터 변경 사항을 관찰하고 UI 업데이트할 수 있도록 함
+(1) PagingSource를 사용해 데이터 가져오는 방법을 지정
+(2) Pager를 사용해서 PagingData의 Flow를 생성
+(3) ViewModel에서 PagingData를 관찰하고 RecyclerView에 렌더링하기 위해 PagingDataAdapter에 submit
+
+### 실전 질문
+(1) Paging 라이브러리는 데이터 로딩 중 오류를 어떻게 처리하며, 페이지네이션된 데이터 흐름에서 오류 처리 및 재시도 메커니즘을 구현하기 위해 사용해 본 전략은 무엇인가요?
 
 
 ## Q58) Baseline Profile은 앱의 성능에 어떤 이점을 가져다주나요?
