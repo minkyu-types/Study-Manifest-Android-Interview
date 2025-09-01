@@ -45,6 +45,9 @@
   외부에서의 직접적인 수정을 방지하기 위해 ViewModel 내에서 프라이빗하게 유지함
 - LiveData: 외부 컴포넌트가 데이터를 수정하는 것을 방지하는 읽기 전용 LiveData로, 더 나은 캡슐화를 보장함
 
+- 보통 ViewModel 클래스 내부에서 Mutable 객체를 관리하고, 외부에는 Immutable 객체를 노출시키기 위해 backing property를 사용함
+  StateFlow, LiveData 등
+
 ### LiveData 사용 사례
 (1) UI 상태 관리: 네트워크 응답, 데이터베이스와 같은 소스의 데이터를 담는 컨테이너 역할
 (2) 옵저버 패턴 구현: LiveData는 발행자 역할을 하고 Observer 인터페잉스 구현이 구독자 역할을 하는 옵저버 패턴을 따름. LiveData 값이 변경될 될 때마다 구독자에게 실시간 업데이트를 용이하게 함
