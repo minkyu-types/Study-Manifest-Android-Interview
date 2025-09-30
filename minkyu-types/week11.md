@@ -187,6 +187,18 @@ recomposition으로부터 상태를 보존하여 UI가 앱의 데이터 모델�
 
 
 ### Q) 5. Jetpack Compose의 안정성이란 무엇이며, 성능과 어떤 관련이 있나요?
+Stability는 클래스/타입이 동일한 매개변수 인풋에 대해 일관된 결과를 생성하도록 보장하는 속성
+안정적인 클래스/함수는 recomposition이 여러 번 발생하더라도 개발자의 의도와 다르게 동작하지 않도록 보장함
+이걸 통해 Compose가 중복 recomposition 없이 UI 업데이트를 효율적으로 처리하도록 함
+
+recomposition은 이미 렌더링된 UI를 업데이트하기 위해 다양한 메커니즘을 통해 트리거됨
+이 중 컴포저블 함수의 매개변수 안정성은 Compose Runtime과 Compiler가 recomposition이 필요한 시기를 결정할 때 중요한 역할을 함
+
+Compose Compiler는 컴포저블 함수의 매개변수를 검사하고 stable/unstable로 분류함
+이 분류는 Compose Runtime이 매개변수의 입력값 변경에 따라 컴포저블 함수를 다시 렌더링해야 하는지 여부를 결정하는 데 사용되므로
+recomposition을 효율적으로 관리하여 앱 성능을 향상시키는 데 매우 중요함
+
+#### Stable vs Unstable
 
 
 
