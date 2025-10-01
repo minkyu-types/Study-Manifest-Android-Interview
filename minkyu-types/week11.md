@@ -199,12 +199,61 @@ Compose Compiler는 컴포저블 함수의 매개변수를 검사하고 stable/u
 recomposition을 효율적으로 관리하여 앱 성능을 향상시키는 데 매우 중요함
 
 #### Stable vs Unstable
+안정성 판단의 기준은 컴포저블 함수의 매개변수 타입 검사를 통해 이루어진다.
 
+(1) Stable
+- String을 포함한 원시 타입이 읽기 전용인 `val`로 정의된다면, 고유한 값은 변경되지 않으므로 Stable
+- 값을 캡처하지 않는 람다 표현식(`(Int) -> String`)과 같은 함수 타입도 동작이 예측 가능하므로 Stable
+- 클래스, 특히 읽기 전용이거나 변경 불가능하고 stable한 `public` 속성을 가진 `data class`는 Stable
+
+(2) Unstable
+- 인터페이스/추상 클래스. `List`/`Map`/`Any와` 같은 인터페이스는 컴파일 시점에 구현체의 종류를 보장할 수 없으므로 반드시 Unstable
+- 가변 프로퍼티(`var`)를 가진 클래스. 하나 이상의 가변/불안정한 타입의 `public` 프로퍼티를 가진다면 Unstable
+
+#### Composable 함수 추론하기
+Compose Compiler가 컴포저블 함수의 유형을 추론하고 최적화하는 원리를 잘 이해해야 함
+Compose Compiler는 Kotlin Compiler Plugin 기반으로, 컴파일 타임에 코드를 분석함
+이 때 성능을 최적화하기 위해 컴파일러는 컴포저블 함수를 Restartable/Skippable/Moveable/Replaceable과 같은 유형으로 분류함
+이 중 Restartable/Skippable 유형이 recomposition을 실행시키는 논리에서 매우 중요한 역할을 함
+
+(1) Restartable
+Compose Compiler에 의해 결정되는 컴포저블 유형으로, Restartable로 분류된 함수는 recomposition 프로세스의 기반을 형성함
+즉, 매개변수 입력값/상태가 변경되면 Compose Runtime은 UI를 업데이트하기 위해 recomposition을 위해 함수를 재호출함
+대부분의 컴포저블 함수는 restartable로 간주되므로 Runtime이 필요시마다 recomposition을 트리거할 수 있음
+
+(2) Skippable
+Skippable로 분류된 함수는 스마트 recomposition에 의해 활성화된 특정 조건 하에서 recomposition을 건너뛸 수 있음
+recomposition을 건너뜀으로써 하위 함수를 호출하지 않아도 되므로 성능 향상에 중요함
+특히, 컴포저블 함수는 restartable이면서 skippable일 수 있음
+이 말은 곧 필요시에 recomposition을 수행할 수 있지만, 조건이 허용되면 건너뛸 수 있음을 의미함
+
+#### Pro Tips for Mastery: Smart Recomposition이란?
+
+
+#### Pro Tips for Mastery: 안정성 어노테이션의 종류와 각각의 차이점
+
+
+#### Pro Tips for Mastery: `@Immutable` 대신 `@Stable`을 잘못 사용하면 어떻게 될까?
 
 
 ### Q) 6. 안전성 개선을 통해 Compose 성능을 최적화한 경험이 있나요?
+Jetpack Compose의 성능 최적화는 컴포저블 함수를 안정화하고, 불필요한 recomposition을 최소화하는 데 달려 있음.
+안정성은 Compose가 recomposition 중에 어떤 함수를 건너뛸 지 효과적으로 결정할 수 있도록 하여 UI 렌더링 효율을 향상시킴
 
+#### Immutable Collections
+List/Map과 같은 읽기 전용 컬렉션은 구현 과정에서 "참조값"이 아닌 내부 아이템의 변경이 발생할 수 있으므로, Compose 컴파일러에 의해 Unstable로 처리됨
 
+```
+internal var mutableUserList: MutableList<User> = mutableListOf()
+public val usreList: List<User> = mutableUserList
+```
+위 코드에서 userList는 읽기 전용인 List 타입으로 선언되지만, mutable 객체를 통해서 인스턴스화될 수 있으므로 unstable로 처리함
+이 때 안정성을 보장하기 위해 본질적으로 stable한 kotlinx.collections.immutable 또는 Guava의 immutable 컬렉션을 사용할 수 있음
+
+#### Pro Tips for Mastery: ImmutableList 코드를 보면 ImmutableList로 결국 인터페이스로 정의되어 있는데, 왜 ImmutableList는 Stable이고 List는 Unstable인가?
+ImmutableList가 stable로 처리되는 이유는 Compose 컴파일러 내부에서 해당 패키지를 stable로 처리하도록 하드코딩되어 있기 때문임
+Dagger의 Lazy 등 또한 stable로 처리됨
+Compose Compiler는 stable로 처리해야 하는 클래스의 패키지 이름 목록을 명시적으로 하드코딩하여 관리함
 
 
 
